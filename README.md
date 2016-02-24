@@ -8,8 +8,8 @@ and perform deep analysis.
 Olaper is installed as Java servlet in the J2EE container, like Jetty[http://download.eclipse.org/jetty/] or
 Tomcat[http://tomcat.apache.org/]. Then it should be configured according to the schema of your database.
 
-![olaper usage schema](https://raw.githubusercontent.com/Wondersoft/olaper/master/content/olaper.png)
 
+![olaper usage schema](https://raw.githubusercontent.com/Wondersoft/olaper/master/content/olaper.png)
 
 
 ## Installation
