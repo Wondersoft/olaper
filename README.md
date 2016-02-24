@@ -1,6 +1,8 @@
 # Olaper
 
-Olaper is the XMLA OLAP interface to your database. It allows to run multi-dimensional (MDX) queries
+## Overview
+
+Olaper is the XMLA OLAP interface to your SQL database. It allows to run multi-dimensional (MDX) queries
 on your database - be it MySQL, Oracle, Vertica or other. You then can use specialized OLAP
 tools, like Saiku[http://www.meteorite.bi/products/saiku] to see your data in different dimensions
 and perform deep analysis.
@@ -11,136 +13,96 @@ Tomcat[http://tomcat.apache.org/]. Then it should be configured according to the
 
 ![olaper usage schema](https://raw.githubusercontent.com/Wondersoft/olaper/master/content/olaper.png)
 
+## Olaper features
+
+1. Olaper exposes XMLA[https://en.wikipedia.org/wiki/XML_for_Analysis] interface, 
+which is a standard way to execute MDX[https://en.wikipedia.org/wiki/MultiDimensional_eXpressions] queries
+remotely, over HTTP or HTTPs protocols. Actually it means that you expose your database in a Web service
+for analysis, that can then be used by many parties and tools in a variety of ways
+
+2. Olaper is a ROLAP[https://en.wikipedia.org/wiki/ROLAP] - type engine. Together with high-performance
+databases, like HP Vertica[https://en.wikipedia.org/wiki/Vertica], it allows to run real-time queries
+over huge amount of data. Olaper does not use any caching, so the data you get will always be up-to-date.
+
+3. Olaper automatically uses aggregates (Oracle "materialized views" or Vertica's "projections") if possible
+on per-query basis. It allows to run queries faster even on huge amount of data, pre-aggregating it on 
+database side.
+
+4. Olaper have separated configuration for "cubes" and "tables". Cubes is OLAP world, and tables is SQL world.
+It allows to define a logical cube schema and run it against your database.
+
+5. Olaper uses JDBC drivers and standard SQL to connect to databases.
+
 
 ## Installation
 
-Add this line to your application's Gemfile:
+1. Download a servlet container server ( for example, Jetty[http://download.eclipse.org/jetty/] ) and install it,
+or use your favorite one.
 
-```ruby
-gem 'olap-xmla'
-```
+2. Place file olaper.war from the latest release ( https://github.com/Wondersoft/olaper/releases ) and place it in
+webapps folder in container
 
-And then execute:
+3. Create a directory /etc/olaper and copy files from https://github.com/Wondersoft/olaper/tree/master/example directory: cubes.json and tables.json
 
-    $ bundle
+4. Depending on what database you use, download JDBC driver JAR and place it in your server in lib ( or lib/ext )
+directory. It may depend on the server you use, but basically the JDBC JAR must appear in the classpath when your server starts.
 
-Or install it yourself as:
+After installation, you should configure files  cubes.json and tables.json for your particular database. Then you may
+connect to server using XMLA URL, like http://localhost:8180/olaper/xmla.
 
-    $ gem install olap-xmla
+## Demo configuration ("foodmart")
 
-## Usage
+To test and try olaper, you can use the demo configuration with the pre-configured database.
+Follow the following steps to configure it:
 
-Using the gem is very simple, only basic knowledge on OLAP is required.
-
-### Connecting to server
-
-To use the gem, you need to know the connection requisites to connect to XMLA server:
-
-1. Server URL ( typically, http: or https: URL )
-2. Datasource and catalog names. You can check them in your XMLA server configuration
-
-Connecting to the server and executing MDX are straightforward:
-
-```ruby
-require 'olap/xmla'
-
-client = Olap::Xmla.client({
-            server: 'http://your-olap-server',
-            datasource: 'your-datasource',
-            catalog: 'your-catalog'})
-response = client.request 'your-mdx-here'
-```
-
-### Configuration in Rails
-
-If you are using this gem in Rails application, which uses just single OLAP data source,
-you can simplify the code by pre-configuring the XMLA connection.
-
-Create a file olap.rb in config/initializers directory with the following content:
-
-```ruby
-Olap::Xmla.default_options= { server: 'http://your-olap-server',
-                                datasource: 'your-datasource',
-                                catalog: 'your-catalog'}
-```
-
-Then in Rails application code you can simply do:
-
-```ruby
-response = Olap::Xmla.client.request 'your-mdx-here'
-```
-
-### Querying MDX
-
-The gem does not parse MDX, just passes it to XMLA server.
-
-However, it can do substituting parameters in the query:
-
-```ruby
-MDX_QUERY = 'SET [~ROWS_Date] AS {[DateTime].[Date].[Date].[%DATE%]}'
-
-Olap::Xmla.client.request MDX_QUERY, {'%DATE%' => '20150530'}
-```
-
-This allows to store MDX queries in constants, while execute them with dynamic parameters.
-Note, that you should never use these parameters directly from Rails request, as
-this may create security breach!
-
-### Response
-
-
-You may use the response to render the results to user, or post-process it to analyse the data
-The following methods can be used to request the meta-data and data from the response:
-
-```ruby
-response = client.request(mdx)
-
-
-# Meta - data of the response
-response.measures  #  array of the columns definitions ( :name / :caption )
-response.dimensions # array of the rows definitions ( :name )
-
-# Response data
-response.rows # rows of the response
-response.to_hash # response as a hash
-response.column_values(column_num) # just one column of the response
+1. To setup the database you will need MySQL server installation. Log into MySQL console and create a database:
 
 ```
+mysql> create database foodmart  default character set utf8 default collate utf8_general_ci;
+Query OK, 1 row affected (0,01 sec)
 
-### Example: rendering a table on web page
+mysql> create user 'foodmart'@'localhost' identified by 'foodmart';
+Query OK, 0 rows affected (0,11 sec)
 
-Typically, the request should be done in controller action, as simple as:
-
-OlapController.erb
-```ruby
-def index
-@response = Olap::Xmla.client.request 'WITH SET ... your mdx goes here';
-%>
+mysql> grant ALL privileges on foodmart.* to 'foodmart'@'localhost' identified by 'foodmart' with grant option;
+Query OK, 0 rows affected (0,00 sec)
 ```
 
-and in the HTML Erb view you use iteration over the response as:
 
-index.html.erb
-```ruby
-<table>
-  <thead><tr>
-        <% for dim in @response.dimensions %><th><%= dim[:name] %></th><% end %>
-        <% for m in @response.measures %><th><%= m[:caption] %></th><% end %>
-    </tr></thead>
-  <tbody>
-    <% for row in @response.rows %>
-    <tr>
-       <% for label in row[:labels] %>
-        <td><%= label[:value] %></td>
-       <% end %>
-      <% for value in row[:values] %>
-          <td><%= value[:fmt_value] || value[:value] %></td>
-      <% end %>
-    </tr>
-    <% end %>
-  </tbody>
-</table>
+2. checkout the project https://github.com/OSBI/foodmart-data and populate data in database:
+
 ```
+$ cd data/
+$ unzip DataScript.zip 
+Archive:  DataScript.zip
+  inflating: FoodMartCreateData.sql  
+$ ls
+DataScript.zip		FoodMartCreateData.sql
+$ cd ..
+$ sh FoodMartLoader.sh --db mysql
+```
+
+3. Download MySQL JDBC driver JAR and place it in your server in lib ( or lib/ext ) directory of your web server.
+
+4. Start the server and try to connect to Olaper URL http://localhost:8080/olaper/xmla ( the port number may differ depending on your
+server configuration! ). You should then get something like this:
+
+```
+HTTP ERROR 405
+
+Problem accessing /olaper/xmla. Reason:
+
+    HTTP method GET is not supported by this URL
+```
+
+5. Run OLAP tool and configure it to the Olaper URL. For saiku, it may look like this:
+
+![saiku config](https://raw.githubusercontent.com/Wondersoft/olaper/master/content/saiku.png)
+
+6. After that, you can run queries on the cube Foodmart:
+
+![saiku query](https://raw.githubusercontent.com/Wondersoft/olaper/master/content/query.png)
+
 
 Have fun!
 
@@ -155,25 +117,3 @@ Have fun!
 
 
 
-
-
-mysql> create database foodmart  default character set utf8 default collate utf8_general_ci;
-Query OK, 1 row affected (0,01 sec)
-
-mysql> create user 'foodmart'@'localhost' identified by 'foodmart';
-Query OK, 0 rows affected (0,11 sec)
-
-mysql> grant ALL privileges on foodmart.* to 'foodmart'@'localhost' identified by 'foodmart' with grant option;
-Query OK, 0 rows affected (0,00 sec)
-
-checkout the project https://github.com/OSBI/foodmart-data
-
-
-MBP-Aleksej:foodmart-data-master studnev$ cd data/
-MBP-Aleksej:data studnev$ unzip DataScript.zip 
-Archive:  DataScript.zip
-  inflating: FoodMartCreateData.sql  
-MBP-Aleksej:data studnev$ ls
-DataScript.zip		FoodMartCreateData.sql
-MBP-Aleksej:data studnev$ cd ..
-MBP-Aleksej:foodmart-data-master studnev$ sh FoodMartLoader.sh --db mysql
