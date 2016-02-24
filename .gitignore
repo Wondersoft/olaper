@@ -1,0 +1,9 @@
+/build
+/target
+/tmp
+/doc
+/etc
+/driver
+/.settings
+/src/main/java/*.json
+/WebContent/production
