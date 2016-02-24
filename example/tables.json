@@ -1,0 +1,153 @@
+{
+	"schema": "foodmart",
+	"dataSource": "jdbc:mysql://localhost:3306/foodmart?user=foodmart&password=foodmart",
+	"dimensions":  [
+		{
+			"table": "product",
+			"key": "product_id",
+			"columns": [
+				{
+					"attribute": "Product name",						
+					"column": "product_name",
+					"identified_by": "product_id",
+					"sorted_by": "product_name",
+					"sort_direction": "ASC"						
+				},
+				{
+					"attribute": "Brand name",						
+					"column": "brand_name"					
+				}	
+			]					
+		},
+		{
+			"table": "time_by_day",
+			"key": "time_id",
+			"columns": [
+				{
+					"column": "the_date",
+					"attribute": "Date"					
+				},
+				{
+					"column": "day_of_month",
+					"attribute": "Day of month"
+				},
+				{
+					"column": "the_month",
+					"attribute": "Month of the year",
+					"identified_by": "month_of_year",
+					"sorted_by": "month_of_year"					
+				},
+				{
+					"column": "the_year",
+					"attribute": "Year"
+				},
+				{
+					"column": "quarter",
+					"attribute": "Quarter"
+				},
+				{
+					"column": "month_of_year"
+				}
+			]
+		
+		},
+		{
+			"table": "customer",
+			"key": "customer_id",
+			"columns": [
+				{
+					"attribute": "Name",						
+					"column": "fullname",
+					"identified_by": "account_num"				
+				},
+				{
+					"attribute": "Member card",						
+					"column": "member_card"				
+				},
+				{
+					"column": "account_num"	
+				}							
+			]					
+		},		
+		{
+			"table": "promotion",
+			"key": "promotion_id",
+			"columns": [
+				{
+					"attribute": "Name",
+					"column": "promotion_name",
+					"identified_by": "promotion_id"
+				}																		
+			]					
+		},
+		{
+			"table": "store",
+			"key": "store_id",
+			"columns": [
+				{
+					"attribute": "Name",
+					"column": "store_name",
+					"identified_by": "store_id"
+				},
+				{
+					"attribute": "Type",
+					"column": "store_type"
+				}																						
+			]					
+		}																				
+	],
+	"aggregates":  [
+		{
+			"table": "sales_fact_1997",
+			"joins": [
+				{
+					"dimension": "Product",
+					"table": "product",
+					"key": "product_id"
+				},
+				{
+					"dimension": "Date",
+					"table": "time_by_day",
+					"key": "time_id"
+				},
+				{
+					"dimension": "Customer",
+					"table": "customer",
+					"key": "customer_id"
+				},
+				{
+					"dimension": "Promotion",
+					"table": "promotion",
+					"key": "promotion_id"
+				},
+				{
+					"dimension": "Store",
+					"table": "store",
+					"key": "store_id"					
+				}
+			],
+			"measures": [
+				{
+					"measure": "Store sales",
+					"column": "store_sales"					
+				},			
+				{
+					"measure": "Store cost",
+					"column": "store_cost"					
+				},
+				{
+					"measure": "Unit sales",
+					"column": "unit_sales"					
+				},								
+				{
+					"measure": "Store revenue",
+					"formula": "${Store_sales}-${Store_cost}"
+				},
+				{
+					"measure": "Store ROI",
+					"formula": "(${Store_sales}-${Store_cost}) * 100.0 / NULLIF(${Store_sales},0)"
+				}
+			]
+		}
+	]
+}

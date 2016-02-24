@@ -59,6 +59,27 @@
         </plugins>
         </build>
     </profile>
+    
+       <profile>
+        <id>release</id>
+        <build>
+        <plugins>
+        
+              <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <warSourceDirectory>WebContent/release</warSourceDirectory>
+          <failOnMissingWebXml>true</failOnMissingWebXml>
+          <warName>olaper</warName>
+        </configuration>
+      </plugin>
+        
+        
+        </plugins>
+        </build>
+    </profile>
+    
 </profiles>
 
   

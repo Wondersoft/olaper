@@ -1,0 +1,173 @@
+{
+	"name": "Provider=Mondrian;DataSource=Foodmart;",
+	"caption": "Foodmart DWH",
+	"catalogs": [
+		{
+			"name": "Foodmart",
+			"physical_schema": "/etc/olaper/tables.json",
+			"dimensions": [
+				{
+					"name": "Product",
+					"caption": "Product",
+					"attributes": [
+						{
+							"name": "Product name",
+							"caption": "Product name",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Brand name",
+							"caption": "Brand name",
+							"auto_hierarchy": false
+						}					
+					],
+					"hierarchies": [
+						{
+							"name": "Products by brands",
+							"caption": "Products by brands",
+							"levels": [
+								"Brand name",
+								"Product name"
+							]
+						}
+					]
+				},
+				{
+					"name": "Date",
+					"caption": "Date of sale",
+					"attributes": [
+						{
+							"name": "Year",
+							"caption": "Year",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Quarter",
+							"caption": "Quarter of the year",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Month of the year",
+							"caption": "Month of the year",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Day of month",
+							"caption": "Day",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Date",
+							"caption": "Date"
+						}		
+					],
+					"hierarchies": [
+						{
+							"name": "Year by quarters",
+							"caption": "Year by quarters",
+							"levels": [
+								"Year",
+								"Quarter",
+								"Month of the year",
+								"Day of month"
+							]
+						}
+					]
+				},
+				{
+					"name": "Customer",
+					"caption": "Customer",
+					"attributes": [
+						{
+							"name": "Name",
+							"caption": "Customer name"
+						},
+						{
+							"name": "Member card",
+							"caption": "Type of Member card"
+						}			
+					]
+				},
+				{
+					"name": "Promotion",
+					"caption": "Promotion",
+					"attributes": [
+						{
+							"name": "Name",
+							"caption": "Promo name"
+						}				
+					]
+				},
+				{
+					"name": "Store",
+					"caption": "Store",
+					"attributes": [
+						{
+							"name": "Name",
+							"caption": "Store name",
+							"auto_hierarchy": false
+						},			
+						{
+							"name": "Type",
+							"caption": "Store type",
+							"auto_hierarchy": false
+						}											
+					],
+					"hierarchies": [
+						{
+							"name": "Stores by types",
+							"caption": "Stores by types",
+							"levels": [
+								"Type",
+								"Name"
+							]
+						}
+					]
+				}
+			],
+			"cubes": [
+				{
+				  "name": "Store sales",
+				  "caption": "Store sales",
+				  "dimensions": [
+				  		"Date",
+				  		"Product",
+				  		"Promotion",
+				  		"Store",
+				  		"Customer"
+				  ],
+				 "measures": [
+					{
+						"name": "Store sales",
+						"caption": "Amount of sales, $", 
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Store cost",
+						"caption": "Store cost, $",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Unit sales",
+						"caption": "Unit sales"
+					},
+					{
+						"name": "Store revenue",
+						"caption": "Store revenue, $",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Store ROI",
+						"caption": "Store ROI, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					}
+				 ]
+				}
+			]
+		}
+	]
+}
