@@ -182,8 +182,7 @@ Dimension has the following structure:
 				}
 ```				
 
-Dimension structure defines attributes and hierarchies. The way how you define it here will detemine
-what you will see in your OLAP tool as dimension.
+Dimension structure defines attributes and hierarchies.
 
 Hierarchies are built from attributes, the "auto_hierarchy" controls if the single attribute should
 automatically form an hierarchy or not. 
@@ -220,7 +219,6 @@ Dimensions is the list of dimensions of the cube.
 
 Measures is the list of measure definition - name, caption, the datatype and format ( optional ).
 All measures are considered numeric - Double or Integer.
-
 
 
 ### tables.json
