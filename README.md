@@ -15,23 +15,25 @@ Olaper is installed as Java servlet in the J2EE container, like [Jetty](http://d
 
 ## Olaper features
 
-1. Olaper exposes [XMLA](https://en.wikipedia.org/wiki/XML_for_Analysis) interface, 
+1. Olaper builds multi-dimensional cubes from relational tables
+
+2. Olaper exposes [XMLA](https://en.wikipedia.org/wiki/XML_for_Analysis) interface, 
 which is a standard way to execute [MDX](https://en.wikipedia.org/wiki/MultiDimensional_eXpressions) queries
 remotely, over HTTP or HTTPs protocols. Actually it means that you expose your database in a Web service
 for analysis, that can then be used by many parties and tools in a variety of ways
 
-2. Olaper is a [ROLAP](https://en.wikipedia.org/wiki/ROLAP) - type engine. Together with high-performance
+3. Olaper is a [ROLAP](https://en.wikipedia.org/wiki/ROLAP) - type engine. Together with high-performance
 databases, like [HP Vertica](https://en.wikipedia.org/wiki/Vertica), it allows to run real-time queries
 over data. Olaper does not use any caching, so the data you get will always be up-to-date.
 
-3. Olaper automatically uses aggregates (Oracle "materialized views" or Vertica's "projections") if possible
+4. Olaper automatically uses aggregates (Oracle "materialized views" or Vertica's "projections") if possible
 on per-query basis. It allows to run queries faster even on large amount of data, pre-aggregating it on 
 database side.
 
-4. Olaper have separated configuration for "cubes" and "tables". Cubes is OLAP world, and tables is SQL world.
+5. Olaper have separated configuration for "cubes" and "tables". Cubes is OLAP world, and tables is SQL world.
 It allows to define a logical cube schema and run it against your database.
 
-5. Olaper uses JDBC drivers and standard SQL to connect to databases.
+6. Olaper uses JDBC drivers and standard SQL to connect to databases.
 
 
 ## Installation
