@@ -30,12 +30,13 @@ public class CrossJoin extends OlapFunction {
 
 		for(ParseTreeNode arg: node.getArgList() ) {
 			
-			List<LevelMemberSet> arg_set = createLevelMemberSet(arg);
+			OlapOp op = OlapFunctionFactory.INSTANCE.function( arg, cube);
+			List<LevelMemberSet> arg_set = op.memberSet();
 						
 			sets.addAll(arg_set);
 			
 			for(LevelMemberSet s : arg_set){
-				nodeMap.put(s, OlapFunctionFactory.INSTANCE.function( arg, cube));
+				nodeMap.put(s, op);
 			}
 			
 		}
@@ -46,7 +47,7 @@ public class CrossJoin extends OlapFunction {
 	
 	@Override
 	public SetSubquery query(TableMapping mapping, LevelMemberSet layer)
-			throws OlapException {		
+			throws OlapException {
 		OlapOp op = nodeMap.get(layer);		
 		return op.query(mapping, layer);		
 	}
