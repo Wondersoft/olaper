@@ -1,5 +1,6 @@
 package org.olap.server.processor;
 
+import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class LevelMember implements Member {
 	}
 
 	private static String clearControls(String s){
-		return s==null ? s : s.replaceAll("\\p{C}", "");
+		return s==null ? s : s.replaceAll("[\\p{C}\\[\\]]", "_");
 	}
 	
 	@Override
@@ -49,7 +50,8 @@ public class LevelMember implements Member {
 	}
 
 	@Override
-	public String getUniqueName() {		
+	public String getUniqueName() {	
+		
 		return level.getUniqueName() + ".[" + getName() + "]";
 	}
 
