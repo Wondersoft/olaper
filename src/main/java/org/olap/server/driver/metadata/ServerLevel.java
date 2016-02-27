@@ -1,9 +1,9 @@
 package org.olap.server.driver.metadata;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.olap.server.database.NamedElement;
+import org.olap.server.processor.MemberQuery;
 import org.olap4j.OlapException;
 import org.olap4j.impl.Olap4jUtil;
 import org.olap4j.metadata.Dimension;
@@ -82,7 +82,9 @@ public class ServerLevel implements Level {
 
 	@Override
 	public List<Member> getMembers() throws OlapException {
-		return new ArrayList<Member>();
+		ServerDimension dim = (ServerDimension) getDimension();		
+		MemberQuery query = new MemberQuery(dim.getServerSchema().getCatalog(), this);
+		return query.getMembers();
 	}
 
 	@Override

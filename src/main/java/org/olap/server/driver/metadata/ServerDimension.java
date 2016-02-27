@@ -20,8 +20,11 @@ public class ServerDimension implements Dimension{
 
 	private SharedDimensionDefinition definition;
 	private NamedList<Hierarchy> hierarchies;
-	public ServerDimension( SharedDimensionDefinition def) throws OlapException {
+	private ServerSchema serverSchema;
+	
+	public ServerDimension( SharedDimensionDefinition def, ServerSchema serverSchema) throws OlapException {
 		this.definition = def;
+		this.serverSchema = serverSchema;
 		readHierarchies();
 	}
 
@@ -92,6 +95,10 @@ public class ServerDimension implements Dimension{
 	@Override
 	public Hierarchy getDefaultHierarchy() {
 		throw new UnsupportedOperationException("getDefaultHierarchy");
+	}
+
+	public ServerSchema getServerSchema() {
+		return serverSchema;
 	}
 
 }

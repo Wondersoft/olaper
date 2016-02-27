@@ -53,7 +53,7 @@ public class ServerSchema implements Schema {
 	public NamedList<Dimension> getSharedDimensions() throws OlapException {
 		NamedList<Dimension> list = MetadataUtils.metadataNamedList(new ArrayList<Dimension>());	            
 	   for(SharedDimensionDefinition def : definition.dimensions){
-		   list.add(new ServerDimension(def));  
+		   list.add(new ServerDimension(def, this));  
 	   }	
 	   return list;
 	}
