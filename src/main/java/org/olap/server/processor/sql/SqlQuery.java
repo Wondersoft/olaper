@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +28,7 @@ import org.olap4j.metadata.Member;
 import com.healthmarketscience.sqlbuilder.Condition;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.dbspec.basic.DbColumn;
+import com.healthmarketscience.sqlbuilder.dbspec.basic.DbTable;
 
 public class SqlQuery implements ResultSetProcessor{
 	
@@ -221,6 +223,7 @@ public class SqlQuery implements ResultSetProcessor{
 
 
 	protected void buildColumns() throws OlapException {
+		DbTable fromTable = null;
 		for(ResultAxis axis : resultAxes){
 			
 			for(LevelMemberSet layer : axis.getLayers()){
@@ -235,7 +238,7 @@ public class SqlQuery implements ResultSetProcessor{
 				}else if(layer.getLevel() instanceof ServerLevel){
 					
 					TableMapping.LevelMapping lmap = mapping.getMapping(layer.getLevel());
-										
+					fromTable = lmap.name_column.getDbColumn().getTable();			
 					sql.addAliasedColumn(lmap.name_column.getDbColumn(), lmap.name_alias);
 										
 					if(lmap.key_column!=lmap.name_column){
@@ -260,6 +263,12 @@ public class SqlQuery implements ResultSetProcessor{
 			}
 			
 		}
+		
+		if(fromTable==null){
+			log.debug("Adding from table:"+mapping.getAggregate().getDbTable().getName());
+			sql.addFromTable(mapping.getAggregate().getDbTable());
+		}
+		
 	}
 	
 

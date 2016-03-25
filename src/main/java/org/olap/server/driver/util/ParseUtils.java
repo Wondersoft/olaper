@@ -10,6 +10,7 @@ import org.olap4j.mdx.NameSegment;
 import org.olap4j.mdx.ParseTreeNode;
 import org.olap4j.mdx.ParseTreeWriter;
 import org.olap4j.mdx.SelectNode;
+import org.olap4j.mdx.WithMemberNode;
 import org.olap4j.mdx.WithSetNode;
 import org.olap4j.mdx.parser.MdxParser;
 
@@ -41,10 +42,18 @@ public class ParseUtils {
 		String resolvedMdx = ParseUtils.toString(acopy);
 		
 		for(ParseTreeNode wnode: selectNode.getWithList()){
-			WithSetNode wsn = (WithSetNode) wnode;
-			String exprMdx = ParseUtils.toString(wsn.getExpression());
-			String nameMdx = wsn.getIdentifier().toString();
-			resolvedMdx = resolvedMdx.replace(nameMdx, exprMdx);
+			if(wnode instanceof WithSetNode){
+				WithSetNode wsn = (WithSetNode) wnode;
+				String exprMdx = ParseUtils.toString(wsn.getExpression());
+				String nameMdx = wsn.getIdentifier().toString();
+				resolvedMdx = resolvedMdx.replace(nameMdx, exprMdx);				
+			}else if(wnode instanceof WithMemberNode){
+				WithMemberNode wsn = (WithMemberNode) wnode;
+				String exprMdx = ParseUtils.toString(wsn.getExpression());
+				String nameMdx = wsn.getIdentifier().toString();
+				resolvedMdx = resolvedMdx.replace(nameMdx, exprMdx);								
+				
+			}
 		}
 		
 		

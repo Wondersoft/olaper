@@ -30,6 +30,10 @@ public class ServerCube implements Cube{
 	private ServerSchema serverSchema;
 	private CubeDefinition definition;
 	private Dimension measureDimension;
+	public Dimension getMeasureDimension() {
+		return measureDimension;
+	}
+
 	private NamedList<Dimension> dimensions;
 	private NamedList<Hierarchy> hierarchies;
 	private List<Measure> measures;

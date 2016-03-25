@@ -17,6 +17,7 @@ import org.olap.server.database.physical.PhysicalSchema;
 import org.olap.server.database.physical.TableColumn;
 import org.olap.server.database.physical.TableJoin;
 import org.olap.server.database.physical.TableMeasure;
+import org.olap.server.driver.metadata.LiteralMeasure;
 import org.olap.server.driver.metadata.ServerDimension;
 import org.olap.server.driver.metadata.ServerLevel;
 import org.olap.server.driver.metadata.ServerMeasure;
@@ -26,6 +27,9 @@ import org.olap4j.OlapException;
 import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
+
+import com.healthmarketscience.sqlbuilder.NumberValueObject;
+import com.healthmarketscience.sqlbuilder.ValueObject;
 
 public class TableMapping {
 	
@@ -199,6 +203,18 @@ public class TableMapping {
 
 
 	private TableMeasure map(ServerMeasure m) {
+		
+		if(m instanceof LiteralMeasure){
+			LiteralMeasure literal = (LiteralMeasure) m;
+			TableMeasure literalMeasure = new TableMeasure();
+			literalMeasure.setExpression(
+					literal.isNumeric() ? 
+						new NumberValueObject(literal.getLiteralValue()) : 
+						new ValueObject(literal.getLiteralValue())
+						);
+			return literalMeasure;
+		}
+		
 		for(TableMeasure measure : aggregate.measures){
 			if(measure.measure.equals(m.getName())){
 				return measure;

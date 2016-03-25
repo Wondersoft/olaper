@@ -10,6 +10,7 @@ import org.olap4j.OlapException;
 import org.olap4j.mdx.CallNode;
 import org.olap4j.mdx.IdentifierNode;
 import org.olap4j.mdx.IdentifierSegment;
+import org.olap4j.mdx.LiteralNode;
 import org.olap4j.mdx.ParseTreeNode;
 import org.olap4j.mdx.Quoting;
 import org.olap4j.metadata.Cube;
@@ -71,6 +72,9 @@ public class OlapFunctionFactory {
 			
 			return new IdentifiedMember((IdentifierNode) node, cube);
 			
+			
+		}else if(node instanceof LiteralNode){			
+			return new LiteralMember((LiteralNode) node, cube);
 		}else{
 			throw new OlapException("Unsupported expression: "+ParseUtils.toString(node));
 		}
