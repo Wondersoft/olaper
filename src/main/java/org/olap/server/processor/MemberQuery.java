@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.olap.server.driver.metadata.ServerCatalog;
 import org.olap.server.driver.metadata.ServerLevel;
-import org.olap.server.driver.metadata.ServerMeasureDimension;
 import org.olap.server.processor.sql.SqlConnector;
 import org.olap.server.processor.sql.SqlMembersQuery;
 import org.olap4j.OlapException;

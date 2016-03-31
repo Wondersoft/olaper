@@ -1,6 +1,5 @@
 package org.olap.server.processor;
 
-import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
 
@@ -16,6 +15,8 @@ import org.olap4j.metadata.Property;
 
 public class LevelMember implements Member {
 
+	public static final String NULL_MEMBER = "#null";
+	
 	private Level level;
 	private String name, key;
 	private int ordinal;
@@ -44,7 +45,7 @@ public class LevelMember implements Member {
 		if(name!=null && !name.equals(key)){
 			return key + "/" + name;
 		}else if(key==null){
-			return "#null";
+			return NULL_MEMBER;
 		}else
 			return key;
 	}
@@ -57,7 +58,7 @@ public class LevelMember implements Member {
 
 	@Override
 	public String getCaption() {
-		return name==null ? "#null" : name;
+		return name==null ? NULL_MEMBER : name;
 	}
 
 	@Override

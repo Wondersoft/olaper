@@ -8,14 +8,17 @@ import java.util.Set;
 import org.olap.server.database.physical.DimensionTable;
 import org.olap.server.database.physical.TableColumn;
 import org.olap.server.database.physical.TableJoin;
+import org.olap.server.processor.LevelMember;
 import org.olap4j.OlapException;
 
 import com.healthmarketscience.sqlbuilder.BinaryCondition;
+import com.healthmarketscience.sqlbuilder.ComboCondition;
 import com.healthmarketscience.sqlbuilder.Condition;
 import com.healthmarketscience.sqlbuilder.CustomCondition;
 import com.healthmarketscience.sqlbuilder.InCondition;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.Subquery;
+import com.healthmarketscience.sqlbuilder.UnaryCondition;
 
 
 public class SetSubquery {
@@ -86,10 +89,25 @@ public class SetSubquery {
 
 		
 		if(values!=null && values.size()>0){
-			if(values.size()==1)
-				dim_query = dim_query.addCondition(BinaryCondition.equalTo(column.getDbColumn(), values.iterator().next()));
-			else	 
-				dim_query = dim_query.addCondition(new InCondition(column.getDbColumn(), values));			
+			if(values.size()==1){
+				String value = values.iterator().next();
+				if(LevelMember.NULL_MEMBER.equals(value))
+					dim_query = dim_query.addCondition(UnaryCondition.isNull(column.getDbColumn()));
+				else		
+					dim_query = dim_query.addCondition(BinaryCondition.equalTo(column.getDbColumn(), value));
+			}else{ 
+				
+				if(values.contains(LevelMember.NULL_MEMBER)){
+					Set<String> values_without_null = new HashSet<String>(values);
+					values_without_null.remove(LevelMember.NULL_MEMBER);
+					dim_query = dim_query.addCondition(ComboCondition.or(
+							UnaryCondition.isNull(column.getDbColumn()),
+							new InCondition(column.getDbColumn(), values_without_null)));
+				}else{
+					dim_query = dim_query.addCondition(new InCondition(column.getDbColumn(), values));	
+				}
+				
+			}
 		}
 		
 		return new InCondition(join.getForeign_key(), new Subquery(dim_query) );

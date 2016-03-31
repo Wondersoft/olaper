@@ -1,167 +1,976 @@
 {
-	"name": "Provider=Mondrian;DataSource=Foodmart;",
-	"caption": "Foodmart DWH",
+	"name": "Provider=Mondrian;DataSource=Leadada;",
+	"caption": "Leadada DWH",
 	"catalogs": [
 		{
-			"name": "Foodmart",
+			"name": "Ad serving",
 			"physical_schema": "tables.json",
 			"dimensions": [
 				{
-					"name": "Product",
-					"caption": "Product",
+					"name": "Publisher Ad Block",
+					"caption": "Рекламный блок",
 					"attributes": [
 						{
-							"name": "Product name",
-							"caption": "Product name",
+							"name": "Ad block name",
+							"caption": "Блок рекламы",
 							"auto_hierarchy": false
 						},
 						{
-							"name": "Brand name",
-							"caption": "Brand name",
+							"name": "Tool",
+							"caption": "Рекламный инструмент"
+						},
+						{
+							"name": "Publisher",
+							"caption": "Публикатор",
 							"auto_hierarchy": false
-						}					
+						},
+						{
+							"name": "slot_identifier",
+							"caption": "Тег блока"							
+						},
+						{
+							"name": "internal_slot_id",
+							"caption": "ID блока"							
+						},
+						{
+							"name": "internal_insertion_id",
+							"caption": "ID вставки"							
+						},
+						{
+							"name": "internal_tool_id",
+							"caption": "ID инструмента"							
+						},
+						{
+							"name": "internal_publisher_id",
+							"caption": "ID публикатора"							
+						}						
 					],
 					"hierarchies": [
 						{
-							"name": "Products by brands",
-							"caption": "Products by brands",
+							"name": "Publisher ad blocks",
+							"caption": "Рекламные блоки",
 							"levels": [
-								"Brand name",
-								"Product name"
+								"Publisher",
+								"Ad block name"
 							]
 						}
 					]
 				},
 				{
-					"name": "Date",
-					"caption": "Date of sale",
+					"name": "Display Ad Block",
+					"caption": "Показ рекламы: Рекламный блок",
 					"attributes": [
 						{
-							"name": "Year",
-							"caption": "Year",
+							"name": "Ad block name",
+							"caption": "Блок рекламы",
 							"auto_hierarchy": false
 						},
 						{
-							"name": "Quarter",
-							"caption": "Quarter of the year",
+							"name": "Tool",
+							"caption": "Рекламный инструмент",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Publisher",
+							"caption": "Публикатор",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "slot_identifier",
+							"caption": "Тег блока"							
+						},
+						{
+							"name": "internal_slot_id",
+							"caption": "ID блока"							
+						},
+						{
+							"name": "internal_insertion_id",
+							"caption": "ID вставки"							
+						},
+						{
+							"name": "internal_tool_id",
+							"caption": "ID инструмента"							
+						},
+						{
+							"name": "internal_publisher_id",
+							"caption": "ID публикатора"							
+						}						
+					],
+					"hierarchies": [
+						{
+							"name": "Publisher ad blocks",
+							"caption": "Рекламные блоки",
+							"levels": [
+								"Publisher",
+								"Ad block name",
+								"Tool"
+							]
+						}
+					]
+				},
+				{
+					"name": "DateTime",
+					"caption": "Дата и время показа",
+					"attributes": [
+						{
+							"name": "Year",
+							"caption": "Год",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Quarter of the year",
+							"caption": "Квартал",
 							"auto_hierarchy": false
 						},
 						{
 							"name": "Month of the year",
-							"caption": "Month of the year",
+							"caption": "Месяц",
 							"auto_hierarchy": false
 						},
 						{
-							"name": "Day of month",
-							"caption": "Day",
+							"name": "Week of the year",
+							"caption": "Неделя",
 							"auto_hierarchy": false
 						},
 						{
 							"name": "Date",
-							"caption": "Date"
-						}		
+							"caption": "Дата"
+						},
+						{
+							"name": "Day of week",
+							"caption": "День недели",
+							"auto_hierarchy": false
+						},						
+						{
+							"name": "Part of day",
+							"caption": "Часть дня",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Hour",
+							"caption": "Час дня",
+							"auto_hierarchy": false
+						}				
 					],
 					"hierarchies": [
 						{
-							"name": "Year by quarters",
-							"caption": "Year by quarters",
+							"name": "YearByDay",
+							"caption": "Месяцы года",
 							"levels": [
 								"Year",
-								"Quarter",
+								"Quarter of the year",
 								"Month of the year",
-								"Day of month"
+								"Date"
+							]
+						},
+						{
+							"name": "YearByWeeks",
+							"caption": "Недели года",
+							"levels": [
+								"Year",
+								"Week of the year",
+								"Day of week"
+							]
+						},
+						{
+							"name": "DayTime",
+							"caption": "Время суток",
+							"levels": [
+								"Part of day",
+								"Hour"							
 							]
 						}
 					]
 				},
 				{
-					"name": "Customer",
-					"caption": "Customer",
+					"name": "Event DateTime",
+					"caption": "Дата и время события",
 					"attributes": [
 						{
-							"name": "Name",
-							"caption": "Customer name"
+							"name": "Year",
+							"caption": "Год",
+							"auto_hierarchy": false
 						},
 						{
-							"name": "Member card",
-							"caption": "Type of Member card"
-						}			
-					]
-				},
-				{
-					"name": "Promotion",
-					"caption": "Promotion",
-					"attributes": [
+							"name": "Quarter of the year",
+							"caption": "Квартал",
+							"auto_hierarchy": false
+						},
 						{
-							"name": "Name",
-							"caption": "Promo name"
+							"name": "Month of the year",
+							"caption": "Месяц",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Week of the year",
+							"caption": "Неделя",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Date",
+							"caption": "Дата"
+						},
+						{
+							"name": "Day of week",
+							"caption": "День недели",
+							"auto_hierarchy": false
+						},						
+						{
+							"name": "Part of day",
+							"caption": "Часть дня",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Hour",
+							"caption": "Час дня",
+							"auto_hierarchy": false
 						}				
+					],
+					"hierarchies": [
+						{
+							"name": "YearByDay",
+							"caption": "Месяцы года",
+							"levels": [
+								"Year",
+								"Quarter of the year",
+								"Month of the year",
+								"Date"
+							]
+						},
+						{
+							"name": "YearByWeeks",
+							"caption": "Недели года",
+							"levels": [
+								"Year",
+								"Week of the year",
+								"Day of week"
+							]
+						},
+						{
+							"name": "DayTime",
+							"caption": "Время суток",
+							"levels": [
+								"Part of day",
+								"Hour"							
+							]
+						}
 					]
 				},
 				{
-					"name": "Store",
-					"caption": "Store",
+					"name": "Placement",
+					"caption": "Размещение рекламы",
 					"attributes": [
 						{
-							"name": "Name",
-							"caption": "Store name",
+							"name": "Placement Domain",
+							"caption": "Корневой домен сайта",
+							"auto_hierarchy": false
+						},
+						{
+							"name": "Placement Site",
+							"caption": "Домен сайта"
+						},
+						{
+							"name": "Placement Path",
+							"caption": "Страница сайта"
+						}
+											
+					],
+					"hierarchies": [
+						{
+							"name": "Site",
+							"caption": "Место размещения",
+							"levels": [
+								"Placement Domain",
+								"Placement Site"
+							]
+						}
+					]
+				},
+				{
+					"name": "Offer",
+					"caption": "Оффер",
+					"attributes": [
+						{
+							"name": "Advertiser",
+							"caption": "Рекламодатель",
 							"auto_hierarchy": false
 						},			
 						{
-							"name": "Type",
-							"caption": "Store type",
+							"name": "Product",
+							"caption": "Продукт",
 							"auto_hierarchy": false
-						}											
+						},					
+						{
+							"name": "Affiliate network",
+							"caption": "Партнерская сеть"
+						},	
+						{
+							"name": "Product category",
+							"caption": "Категория продукта"
+						},	
+						{
+							"name": "internal_offer_id",
+							"caption": "ID оффера"							
+						},
+						{
+							"name": "internal_product_id",
+							"caption": "ID продукта"							
+						},
+						{
+							"name": "product_category_id",
+							"caption": "ID тематики продукта"							
+						}												
 					],
 					"hierarchies": [
 						{
-							"name": "Stores by types",
-							"caption": "Stores by types",
+							"name": "Advertiser products",
+							"caption": "Продукты рекламодателя",
 							"levels": [
-								"Type",
-								"Name"
+								"Advertiser",
+								"Product"
 							]
 						}
+					]
+				},
+				{
+					"name": "Display Offer",
+					"caption": "Показ рекламы: Оффер",
+					"attributes": [
+						{
+							"name": "Advertiser",
+							"caption": "Рекламодатель",
+							"auto_hierarchy": false
+						},			
+						{
+							"name": "Product",
+							"caption": "Продукт",
+							"auto_hierarchy": false
+						},					
+						{
+							"name": "Affiliate network",
+							"caption": "Партнерская сеть"
+						},	
+						{
+							"name": "Product category",
+							"caption": "Категория продукта"
+						},	
+						{
+							"name": "internal_offer_id",
+							"caption": "ID оффера"							
+						},
+						{
+							"name": "internal_product_id",
+							"caption": "ID продукта"							
+						},
+						{
+							"name": "product_category_id",
+							"caption": "ID тематики продукта"							
+						}												
+					],
+					"hierarchies": [
+						{
+							"name": "Advertiser products",
+							"caption": "Продукты рекламодателя",
+							"levels": [
+								"Advertiser",
+								"Product"
+							]
+						}
+					]
+				},
+				{
+					"name": "Creative",
+					"caption": "Объявление",
+					"attributes": [
+						{
+							"name": "internal_creative_id",
+							"caption": "ID объявления"
+						},			
+						{
+							"name": "Creative type",
+							"caption": "Тип объявления"
+						},					
+						{
+							"name": "Creative size",
+							"caption": "Размер объявления"
+						}												
+					]
+				},
+				{
+					"name": "Landing",
+					"caption": "Посадочная страница оффера",
+					"attributes": [
+						{
+							"name": "internal_landing_id",
+							"caption": "ID лендинга"
+						},			
+						{
+							"name": "Tracking type",
+							"caption": "Тип трекинга"
+						}												
+					]
+				},														
+				{
+					"name": "Device",
+					"caption": "Устройство",
+					"attributes": [
+						{
+							"name": "Operating system version",
+							"caption": "Версия операционной системы"
+						},														
+						{
+							"name": "Operating system",
+							"caption": "Операционная система"
+						},														
+						{
+							"name": "Operating system type",
+							"caption": "Тип операционной системы"
+						},														
+						{
+							"name": "Device type",
+							"caption": "Тип устройства"
+						},														
+						{
+							"name": "Browser version",
+							"caption": "Версия браузера"
+						},														
+						{
+							"name": "Browser major version",
+							"caption": "Основная версия браузера"
+						},														
+						{
+							"name": "Browser family",
+							"caption": "Разновидность браузера"
+						},														
+						{
+							"name": "Browser name",
+							"caption": "Браузер"
+						},														
+						{
+							"name": "Browser type",
+							"caption": "Тип браузера"
+						}														
+					]
+				},
+				{
+					"name": "Source",
+					"caption": "Источник трафика",
+					"attributes": [
+						{
+							"name": "Source type",
+							"caption": "Тип источника"
+						},														
+						{
+							"name": "Source site",
+							"caption": "Сайт источника"
+						},														
+						{
+							"name": "Source path",
+							"caption": "Страница источника"
+						}													
+					]
+				},
+				{
+					"name": "Ad Source",
+					"caption": "Рекламный трафик",
+					"attributes": [
+						{
+							"name": "Ad medium",
+							"caption": "Тип рекламной кампании"
+						},														
+						{
+							"name": "Ad campaign",
+							"caption": "Рекламная кампания"
+						},														
+						{
+							"name": "Ad creative",
+							"caption": "Объявление"
+						},													
+						{
+							"name": "Ad placement",
+							"caption": "Размещение"
+						},													
+						{
+							"name": "Ad network",
+							"caption": "Рекламная сеть"
+						}													
+					]
+				},
+				{
+					"name": "Geo",
+					"caption": "География",
+					"attributes": [
+						{
+							"name": "geoname_id",
+							"caption": "GeoName ID"
+						},														
+						{
+							"name": "Country",
+							"caption": "Страна"
+						},														
+						{
+							"name": "Region",
+							"caption": "Регион"
+						},														
+						{
+							"name": "City",
+							"caption": "Город"
+						},														
+						{
+							"name": "Timezone",
+							"caption": "Часовой пояс"
+						}													
+					],
+					"hierarchies": [
+						{
+							"name": "Geo location",
+							"caption": "Местонахождение",
+							"levels": [
+								"Country",
+								"Region",
+								"City"
+							]
+						}
+					]
+				},
+				{
+					"name": "Entry",
+					"caption": "Страница входа",
+					"attributes": [
+						{
+							"name": "Entry Site",
+							"caption": "Сайт"
+						},														
+						{
+							"name": "Entry Path",
+							"caption": "Страница"
+						}													
+					]
+				},
+				{
+					"name": "SubId",
+					"caption": "Метки публикатора",
+					"attributes": [
+						{
+							"name": "Sub IDs",
+							"caption": "Sub IDs"
+						}												
+					]
+				},
+				{
+					"name": "Position",
+					"caption": "Позиция показа объявления",
+					"attributes": [
+						{
+							"name": "Total Positions Count",
+							"caption": "Общее количество объявлений"
+						},														
+						{
+							"name": "Display Position",
+							"caption": "Позиция показа"
+						}													
+					]
+				},
+				{
+					"name": "Language",
+					"caption": "Язык",
+					"attributes": [
+						{
+							"name": "Language code",
+							"caption": "Код языка"
+						},														
+						{
+							"name": "Language name",
+							"caption": "Язык"
+						}													
+					]
+				},
+				{
+					"name": "Price",
+					"caption": "Цена оффера",
+					"attributes": [
+						{
+							"name": "Target",
+							"caption": "Цель"
+						},														
+						{
+							"name": "internal_price_id",
+							"caption": "internal_price_id"
+						},														
+						{
+							"name": "internal_target_id",
+							"caption": "internal_target_id"
+						},														
+						{
+							"name": "Price amount",
+							"caption": "Сумма"
+						},														
+						{
+							"name": "Price type",
+							"caption": "Тип цены"
+						},														
+						{
+							"name": "Price name",
+							"caption": "Полное название цены"
+						},														
+						{
+							"name": "Currency name",
+							"caption": "Название валюты"
+						},														
+						{
+							"name": "Currency code",
+							"caption": "Код валюты"
+						}														
+													
+					]
+				},
+				{
+					"name": "Display Price",
+					"caption": "Показ рекламы: Цена оффера",
+					"attributes": [
+						{
+							"name": "Target",
+							"caption": "Цель"
+						},														
+						{
+							"name": "internal_price_id",
+							"caption": "internal_price_id"
+						},														
+						{
+							"name": "internal_target_id",
+							"caption": "internal_target_id"
+						},														
+						{
+							"name": "Price amount",
+							"caption": "Сумма"
+						},														
+						{
+							"name": "Price type",
+							"caption": "Тип цены"
+						},														
+						{
+							"name": "Price name",
+							"caption": "Полное название цены"
+						},														
+						{
+							"name": "Currency name",
+							"caption": "Название валюты"
+						},														
+						{
+							"name": "Currency code",
+							"caption": "Код валюты"
+						}														
+													
+					]
+				},
+				{
+					"name": "Account",
+					"caption": "Аккаунт партнера",
+					"attributes": [
+						{
+							"name": "internal_account_id",
+							"caption": "internal_account_id"
+						},														
+						{
+							"name": "Account Owner",
+							"caption": "Владелец аккаунта"
+						},														
+						{
+							"name": "Account Owner Type",
+							"caption": "Тип владельца аккаунта"
+						},													
+						{
+							"name": "Network",
+							"caption": "Сеть"
+						},													
+						{
+							"name": "Network Type",
+							"caption": "Тип сети"
+						},													
+						{
+							"name": "Number",
+							"caption": "Номер аккаунта"
+						},
+						{
+							"name": "internal_business_id",
+							"caption": "ID владельца"
+						},
+						{
+							"name": "internal_network_id",
+							"caption": "ID сети"
+						}
+																			
+					]
+				},
+				{
+					"name": "Display Account",
+					"caption": "Показ рекламы: Аккаунт",
+					"attributes": [
+						{
+							"name": "internal_account_id",
+							"caption": "internal_account_id"
+						},														
+						{
+							"name": "Account Owner",
+							"caption": "Владелец аккаунта"
+						},														
+						{
+							"name": "Account Owner Type",
+							"caption": "Тип владельца аккаунта"
+						},													
+						{
+							"name": "Network",
+							"caption": "Сеть"
+						},													
+						{
+							"name": "Network Type",
+							"caption": "Тип сети"
+						},													
+						{
+							"name": "Number",
+							"caption": "Номер аккаунта"
+						},
+						{
+							"name": "internal_business_id",
+							"caption": "ID владельца"
+						},
+						{
+							"name": "internal_network_id",
+							"caption": "ID сети"
+						}
+																			
 					]
 				}
 			],
 			"cubes": [
 				{
-				  "name": "Store sales",
-				  "caption": "Store sales",
+				  "name": "Ad Serving",
+				  "caption": "Показы рекламы",
 				  "dimensions": [
-				  		"Date",
-				  		"Product",
-				  		"Promotion",
-				  		"Store",
-				  		"Customer"
+				  		"DateTime",
+				  		"Event DateTime",
+				  		"Publisher Ad Block",
+				  		"Display Ad Block",
+				  		"Placement",
+				  		"Position",
+				  		"Offer",
+				  		"Display Offer",
+				  		"Price",
+				  		"Display Price",
+				  		"Creative",
+				  		"Landing",
+				  		"Device",
+				  		"Language",
+				  		"Source",
+				  		"Ad Source",
+				  		"Entry",
+				  		"Geo",
+				  		"Account",
+				  		"Display Account",
+				  		"SubId"
 				  ],
 				 "measures": [
 					{
-						"name": "Store sales",
-						"caption": "Amount of sales, $", 
+						"name": "Slots",
+						"caption": "Показы рекламного блока" 
+					},
+					{
+						"name": "Impressions",
+						"caption": "Показы рекламы" 
+					},
+					{
+						"name": "Hits",
+						"caption": "Хиты (неуникальные)"
+					},
+					{
+						"name": "Clicks",
+						"caption": "Клики"
+					},
+					{
+						"name": "Conversions",
+						"caption": "Конверсии"
+					},
+					{
+						"name": "Approval count",
+						"caption": "Подтверждено конверсий"
+					},
+					{
+						"name": "Reject count",
+						"caption": "Отменено конверсий"
+					},
+					{
+						"name": "Revenue count",
+						"caption": "Количество начислений"
+					},
+					{
+						"name": "Converted slots",
+						"caption": "Показы блока с конверсиями"
+					},
+					{
+						"name": "Income estimate",
+						"caption": "Прогноз заработка, руб",
 						"datatype": "Double",
 						"format": "#,##0.00"
 					},
 					{
-						"name": "Store cost",
-						"caption": "Store cost, $",
+						"name": "Original income estimate",
+						"caption": "Исходный прогноз заработка, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},					
+					{
+						"name": "Income amount",
+						"caption": "Размер заработка, руб",
 						"datatype": "Double",
 						"format": "#,##0.00"
 					},
 					{
-						"name": "Unit sales",
-						"caption": "Unit sales"
-					},
+						"name": "Payout estimate",
+						"caption": "Прогноз партнерской выплаты, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},					
 					{
-						"name": "Store revenue",
-						"caption": "Store revenue, $",
+						"name": "Payout amount",
+						"caption": "Размер партнерской выплаты, руб",
 						"datatype": "Double",
 						"format": "#,##0.00"
 					},
 					{
-						"name": "Store ROI",
-						"caption": "Store ROI, %",
+						"name": "CTR, %",
+						"caption": "CTR, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					},
+					{
+						"name": "CTR block, %",
+						"caption": "CTR блока, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					},
+					{
+						"name": "CR, %",
+						"caption": "Коэфф конверсии, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					},
+					{
+						"name": "Approvals, %",
+						"caption": "Процент одобренных конверсий, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					},
+					{
+						"name": "Rejects, %",
+						"caption": "Процент отмененных конверсий, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					},
+					{
+						"name": "Predicted eCPM",
+						"caption": "Прогноз eCPM, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Actual eCPM",
+						"caption": "Фактический eCPM, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Predicted block eCPM",
+						"caption": "Прогноз eCPM блока, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Actual block eCPM",
+						"caption": "Фактический eCPM блока, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Predicted EPC",
+						"caption": "Прогноз EPC, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Actual EPC",
+						"caption": "Фактический EPC, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Predicted Payout per Conversion",
+						"caption": "Прогноз выплаты за конверсию, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Actual Payout per Conversion",
+						"caption": "Фактическая выплата за конверсию, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Predicted Revenue per Conversion",
+						"caption": "Прогноз заработка за конверсию, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Actual Revenue per Conversion",
+						"caption": "Фактический заработок за конверсию, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Income Actual to Predicted",
+						"caption": "Заработок фактический к прогнозу, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					},
+					{
+						"name": "Click uniqueness, %",
+						"caption": "Уникальность кликов, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					},
+					{
+						"name": "Predicted Payout per Conversion",
+						"caption": "Средняя выплата за конверсию, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Network profit estimate",
+						"caption": "Прогноз прибыли сети, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Network profit",
+						"caption": "Прибыль сети, руб",
+						"datatype": "Double",
+						"format": "#,##0.00"
+					},
+					{
+						"name": "Network profit rate estimate",
+						"caption": "Прогноз нормы прибыли сети, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					},
+					{
+						"name": "Network rate profit",
+						"caption": "Норма прибыли сети, %",
+						"datatype": "Double",
+						"format": "#0.00"
+					},
+					{
+						"name": "Prediction error, %",
+						"caption": "Ошибка прогноза, %",
 						"datatype": "Double",
 						"format": "#0.00"
 					}

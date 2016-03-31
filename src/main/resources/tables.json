@@ -1,151 +1,721 @@
 {
-	"schema": "foodmart",
-	"dataSource": "jdbc:mysql://localhost:3306/foodmart?user=foodmart&password=foodmart",
+	"schema": "adserver",
+	"dataSource": "jdbc:vertica://dwh.leadada.com:5433/leadada?user=olap&password=_leadada_com",
 	"dimensions":  [
 		{
-			"table": "product",
-			"key": "product_id",
+			"table": "dim_slot",
+			"key": "dim_slot_id",
 			"columns": [
 				{
-					"attribute": "Product name",						
-					"column": "product_name",
-					"identified_by": "product_id",
-					"sorted_by": "product_name",
+					"attribute": "Ad block name",						
+					"column": "slot_name",
+					"identified_by": "slot_id",
+					"sorted_by": "slot_name",
 					"sort_direction": "ASC"						
 				},
 				{
-					"attribute": "Brand name",						
-					"column": "brand_name"					
+					"attribute": "Tool",						
+					"column": "tool_name",
+					"identified_by": "tool_id",
+					"sorted_by": "tool_name",
+					"sort_direction": "ASC"						
+				},
+				{
+					"attribute": "Publisher",
+					"column": "publisher_name",
+					"identified_by": "publisher_id",
+					"sorted_by": "publisher_name",
+					"sort_direction": "ASC"							
+				},
+				{
+					"column": "slot_id",
+					"attribute": "internal_slot_id"
+				},
+				{
+					"column": "tool_id",
+					"attribute": "internal_tool_id"
+				},
+				{
+					"column": "insertion_id",
+					"attribute": "internal_insertion_id"
+				},
+				{
+					"column": "publisher_id",
+					"attribute": "internal_publisher_id"
+				},								
+				{
+					"column": "slot_identifier",
+					"attribute": "slot_identifier"
 				}	
 			]					
 		},
 		{
-			"table": "time_by_day",
-			"key": "time_id",
+			"table": "dim_datetime",
+			"key": "dim_datetime_id",
 			"columns": [
 				{
-					"column": "the_date",
-					"attribute": "Date"					
+					"column": "date",
+					"attribute": "Date",
+					"identified_by": "yyyymmdd",
+					"sorted_by": "yyyymmdd",
+					"sort_direction": "ASC"						
 				},
 				{
-					"column": "day_of_month",
-					"attribute": "Day of month"
+					"column": "yyyymmdd"
 				},
 				{
-					"column": "the_month",
-					"attribute": "Month of the year",
-					"identified_by": "month_of_year",
-					"sorted_by": "month_of_year"					
-				},
-				{
-					"column": "the_year",
+					"column": "year",
 					"attribute": "Year"
 				},
 				{
 					"column": "quarter",
-					"attribute": "Quarter"
+					"attribute": "Quarter of the year"
 				},
 				{
-					"column": "month_of_year"
+					"column": "month"
+				},
+				{
+					"column": "month_name",
+					"attribute": "Month of the year",
+					"identified_by": "month",
+					"sorted_by": "month"					
+				},
+				{
+					"column": "week_of_year",
+					"attribute": "Week of the year"
+				},
+				{
+					"column": "day_of_week_ru"
+				},
+				{
+					"column": "day_of_week_name",
+					"attribute": "Day of week",
+					"sorted_by": "day_of_week_ru"					
+				},
+				{
+					"column": "part_of_day",
+					"attribute": "Part of day"				
+				},
+				{
+					"column": "hour"
+				},
+				{
+					"column": "hour_name",
+					"attribute": "Hour",
+					"identified_by": "hour",
+					"sorted_by": "hour"									
 				}
+			
 			]
 		
 		},
 		{
-			"table": "customer",
-			"key": "customer_id",
+			"table": "dim_placement",
+			"key": "dim_placement_id",
 			"columns": [
 				{
-					"attribute": "Name",						
-					"column": "fullname",
-					"identified_by": "account_num"				
+					"attribute": "Placement Domain",						
+					"column": "placement_domain"				
 				},
 				{
-					"attribute": "Member card",						
-					"column": "member_card"				
+					"attribute": "Placement Site",						
+					"column": "placement_site"				
 				},
 				{
-					"column": "account_num"	
-				}							
+					"attribute": "Placement Path",
+					"column": "placement_path"
+				}								
 			]					
 		},		
 		{
-			"table": "promotion",
-			"key": "promotion_id",
+			"table": "dim_offer",
+			"key": "dim_offer_id",
 			"columns": [
 				{
-					"attribute": "Name",
-					"column": "promotion_name",
-					"identified_by": "promotion_id"
+					"attribute": "Advertiser",
+					"column": "advertiser_name",
+					"identified_by": "advertiser_id"
+				},			
+				{
+					"attribute": "Product",
+					"column": "product_name",
+					"identified_by": "product_id"					
+				},					
+				{
+					"attribute": "Affiliate network",
+					"column": "affiliate_network_name",
+					"identified_by": "affiliate_network_id"										
+				},	
+				{
+					"attribute": "Product category",
+					"column": "product_category_name",
+					"identified_by": "product_category_id"															
+				},	
+				{
+					"attribute": "internal_offer_id",						
+					"column": "offer_id"
+				},
+				{
+					"attribute": "internal_product_id",							
+					"column": "product_id"
+				},
+				{
+					"attribute": "product_category_id",							
+					"column": "product_category_id"
+				},
+				{
+					"column": "advertiser_id"
+				},
+				{
+					"column": "affiliate_network_id"
+				}																			
+			]					
+		},
+		{
+			"table": "dim_creative",
+			"key": "dim_creative_id",
+			"columns": [
+				{
+					"attribute": "internal_creative_id",
+					"column": "creative_id"
+				},			
+				{
+					"attribute": "Creative type",
+					"column": "creative_type"				
+				},
+				{
+					"attribute": "Creative size",
+					"column": "creative_size"				
+				}																			
+			]					
+		},					
+		{
+			"table": "dim_landing",
+			"key": "dim_landing_id",
+			"columns": [
+				{
+					"attribute": "internal_landing_id",
+					"column": "landing_id"
+				},			
+				{
+					"attribute": "Tracking type",
+					"column": "landing_type"				
+				}																		
+			]					
+		},				
+		{
+			"table": "dim_device",
+			"key": "dim_device_id",
+			"columns": [
+				{
+					"attribute": "Operating system version",
+					"column": "os_version"
+				},														
+				{
+					"attribute": "Operating system",
+					"column": "os_name"
+				},														
+				{
+					"attribute": "Operating system type",
+					"column": "os_type"
+				},														
+				{
+					"attribute": "Device type",
+					"column": "device_type"
+				},														
+				{
+					"attribute": "Browser version",
+					"column": "browser_version"
+				},														
+				{
+					"attribute": "Browser major version",
+					"column": "browser_major_version"
+				},														
+				{
+					"attribute": "Browser family",
+					"column": "browser_family"
+				},														
+				{
+					"attribute": "Browser name",
+					"column": "browser_name"
+				},														
+				{
+					"attribute": "Browser type",
+					"column": "browser_type"
 				}																		
 			]					
 		},
 		{
-			"table": "store",
-			"key": "store_id",
+			"table": "dim_source",
+			"key": "dim_source_id",
 			"columns": [
 				{
-					"attribute": "Name",
-					"column": "store_name",
-					"identified_by": "store_id"
+					"attribute": "Source type",
+					"column": "source_type"
+				},														
+				{
+					"attribute": "Source site",
+					"column": "source_site"
+				},														
+				{
+					"attribute": "Source path",
+					"column": "source_path"
+				}																
+			]					
+		},
+		{
+			"table": "dim_ad_source",
+			"key": "dim_ad_source_id",
+			"columns": [
+				{
+					"attribute": "Ad medium",
+					"column": "ad_medium"
+				},														
+				{
+					"attribute": "Ad campaign",
+					"column": "ad_campaign"
+				},														
+				{
+					"attribute": "Ad creative",
+					"column": "ad_creative"
+				},																
+				{
+					"attribute": "Ad placement",
+					"column": "ad_placement"
+				},																
+				{
+					"attribute": "Ad network",
+					"column": "ad_network"
+				}																
+			]					
+		},
+		{
+			"table": "dim_geo",
+			"key": "dim_geo_id",
+			"columns": [
+				{
+					"attribute": "Country",
+					"column": "country",
+					"identified_by": "country_geoname_id"
+				},														
+				{
+					"attribute": "Region",
+					"column": "region",
+					"identified_by": "region_geoname_id"
+				},														
+				{
+					"attribute": "City",
+					"column": "city",
+					"identified_by": "geoname_id"
+				},														
+				{
+					"attribute": "Timezone",
+					"column": "time_zone_full_name"
+				},														
+				{
+					"attribute": "geoname_id",
+					"column": "geoname_id"
+				},														
+				{
+					"column": "country_geoname_id"
+				},														
+				{
+					"column": "region_geoname_id"
+				}													
+															
+			]					
+		},
+		{
+			"table": "dim_entry",
+			"key": "dim_entry_id",
+			"columns": [
+				{
+					"attribute": "Entry Site",
+					"column": "entry_site"
+				},												
+				{
+					"attribute": "Entry Path",
+					"column": "entry_path"
+				}												
+															
+			]					
+		},
+		{
+			"table": "dim_position",
+			"key": "dim_position_id",
+			"columns": [
+				{
+					"attribute": "Total Positions Count",
+					"column": "positions_count"
+				},												
+				{
+					"attribute": "Display Position",
+					"column": "position_number"
+				}																							
+			]					
+		},
+		{
+			"table": "dim_language",
+			"key": "dim_language_id",
+			"columns": [
+				{
+					"attribute": "Language code",
+					"column": "code"
+				},												
+				{
+					"attribute": "Language name",
+					"column": "name"
+				}																							
+			]					
+		},
+		{
+			"table": "dim_price",
+			"key": "dim_price_id",
+			"columns": [
+				{
+					"attribute": "Target",
+					"column": "target_name",
+					"identified_by": "target_id"
+				},												
+				{
+					"attribute": "internal_price_id",
+					"column": "price_id"
+				},												
+				{
+					"attribute": "internal_target_id",
+					"column": "target_id"
+				},												
+				{
+					"attribute": "Price amount",
+					"column": "price_amount"
+				},												
+				{
+					"attribute": "Price type",
+					"column": "price_type"
+				},												
+				{
+					"attribute": "Price name",
+					"column": "price_name"
+				},												
+				{
+					"attribute": "Currency name",
+					"column": "price_currency_name"
+				},												
+				{
+					"attribute": "Currency code",
+					"column": "price_currency_code"
+				}												
+			]					
+		},
+		{
+			"table": "dim_account",
+			"key": "dim_account_id",
+			"columns": [										
+				{
+					"attribute": "internal_account_id",
+					"column": "account_id"
+				},	
+				{
+					"attribute": "Account Owner",
+					"column": "business_name",
+					"identified_by": "business_id"
+				},													
+				{
+					"attribute": "Account Owner Type",
+					"column": "business_type"
+				},	
+				{
+					"attribute": "Network",
+					"column": "network_name",
+					"identified_by": "network_id"
+				},												
+				{
+					"attribute": "Network Type",
+					"column": "network_type"
+				},												
+				{
+					"attribute": "Number",
+					"column": "account_number"
 				},
 				{
-					"attribute": "Type",
-					"column": "store_type"
-				}																						
+					"attribute": "internal_business_id",
+					"column": "business_id"
+				},
+				{
+					"attribute": "internal_network_id",
+					"column": "network_id"
+				}															
+			]					
+		},
+		{
+			"table": "dim_subid",
+			"key": "dim_subid_id",
+			"columns": [
+				{
+					"attribute": "Sub IDs",						
+					"column": "subids"				
+				}							
 			]					
 		}																				
 	],
 	"aggregates":  [
 		{
-			"table": "sales_fact_1997",
+			"table": "fact_impress",
 			"joins": [
 				{
-					"dimension": "Product",
-					"table": "product",
-					"key": "product_id"
+					"dimension": "Publisher Ad Block",
+					"table": "dim_slot",
+					"key": "dim_slot_fk"
 				},
 				{
-					"dimension": "Date",
-					"table": "time_by_day",
-					"key": "time_id"
+					"dimension": "Display Ad Block",
+					"table": "dim_slot",
+					"key": "dim_slot_display_fk"
 				},
 				{
-					"dimension": "Customer",
-					"table": "customer",
-					"key": "customer_id"
+					"dimension": "Event DateTime",
+					"table": "dim_datetime",
+					"key": "dim_datetime_fk"
 				},
 				{
-					"dimension": "Promotion",
-					"table": "promotion",
-					"key": "promotion_id"
+					"dimension": "DateTime",
+					"table": "dim_datetime",
+					"key": "dim_initial_datetime_fk"
 				},
 				{
-					"dimension": "Store",
-					"table": "store",
-					"key": "store_id"					
-				}
+					"dimension": "Placement",
+					"table": "dim_placement",
+					"key": "dim_placement_fk"					
+				},								
+				{
+					"dimension": "Offer",
+					"table": "dim_offer",
+					"key": "dim_offer_fk"					
+				},			
+				{
+					"dimension": "Display Offer",
+					"table": "dim_offer",
+					"key": "dim_ad_offer_fk"					
+				},	
+				{
+					"dimension": "Creative",
+					"table": "dim_creative",
+					"key": "dim_creative_fk"					
+				},
+				{
+					"dimension": "Landing",
+					"table": "dim_landing",
+					"key": "dim_landing_fk"					
+				},
+				{
+					"dimension": "Device",
+					"table": "dim_device",
+					"key": "dim_device_fk"					
+				},				
+				{
+					"dimension": "Source",
+					"table": "dim_source",
+					"key": "dim_source_fk"					
+				},					
+				{
+					"dimension": "Ad Source",
+					"table": "dim_ad_source",
+					"key": "dim_ad_source_fk"					
+				},					
+				{
+					"dimension": "Geo",
+					"table": "dim_geo",
+					"key": "dim_geo_fk"					
+				},
+				{
+					"dimension": "Entry",
+					"table": "dim_entry",
+					"key": "dim_entry_fk"					
+				},										
+				{
+					"dimension": "Position",
+					"table": "dim_position",
+					"key": "dim_position_fk"					
+				},										
+				{
+					"dimension": "Language",
+					"table": "dim_language",
+					"key": "dim_language_fk"					
+				},										
+				{
+					"dimension": "Price",
+					"table": "dim_price",
+					"key": "dim_price_fk"					
+				},										
+				{
+					"dimension": "Display Price",
+					"table": "dim_price",
+					"key": "dim_ad_price_fk"					
+				},										
+				{
+					"dimension": "Account",
+					"table": "dim_account",
+					"key": "dim_account_fk"					
+				},
+				{
+					"dimension": "Display Account",
+					"table": "dim_account",
+					"key": "dim_ad_account_fk"					
+				},
+				{
+					"dimension": "SubId",
+					"table": "dim_subid",
+					"key": "dim_subid_fk"					
+				}	
 			],
 			"measures": [
 				{
-					"measure": "Store sales",
-					"column": "store_sales"					
+					"measure": "Slots",
+					"column": "slot_count"					
 				},			
 				{
-					"measure": "Store cost",
-					"column": "store_cost"					
+					"measure": "Impressions",
+					"column": "impression_count"					
 				},
 				{
-					"measure": "Unit sales",
-					"column": "unit_sales"					
-				},								
-				{
-					"measure": "Store revenue",
-					"formula": "${Store_sales}-${Store_cost}"
+					"measure": "Hits",
+					"column": "hit_count"					
 				},
 				{
-					"measure": "Store ROI",
-					"formula": "(${Store_sales}-${Store_cost}) * 100.0 / NULLIF(${Store_sales},0)"
+					"measure": "Clicks",
+					"column": "click_count"	
+				},
+				{
+					"measure": "Conversions",
+					"column": "multiple_conversion_count"					
+				},
+				{
+					"measure": "Approval count",
+					"column": "approval_count"					
+				},
+				{
+					"measure": "Reject count",
+					"column": "reject_count"					
+				},
+				{
+					"measure": "Income estimate",
+					"column": "estimated_amount"					
+				},
+				{
+					"measure": "Original income estimate",
+					"column": "original_estimated_amount"					
+				},
+				{
+					"measure": "Income amount",
+					"column": "revenue_amount"					
+				},				
+				{
+					"measure": "Payout estimate",
+					"column": "estimated_payout"					
+				},				
+				{
+					"measure": "Payout amount",
+					"column": "payout_amount"					
+				},
+				{
+					"measure": "Revenue count",
+					"column": "revenue_count"					
+				},
+				{
+					"measure": "Converted slots",
+					"column": "conversion_count"					
+				},												
+				{
+					"measure": "CTR, %",
+					"formula": "${Clicks} * 100.0 / NULLIF(${Impressions},0)"
+				},
+				{
+					"measure": "CTR block, %",
+					"formula": "${Clicks} * 100.0 / NULLIF(${Slots},0)"
+				},
+				{
+					"measure": "CR, %",
+					"formula": "${Conversions} * 100.0 / NULLIF(${Clicks},0)"
+				},
+				{
+					"measure": "Approvals, %",
+					"formula": "${Approval_count} * 100.0 / NULLIF(${Conversions},0)"
+				},
+				{
+					"measure": "Rejects, %",
+					"formula": "${Reject_count} * 100.0 / NULLIF(${Conversions},0)"
+				},
+				{
+					"measure": "Predicted eCPM",
+					"formula": "${Payout_estimate} * 1000.0 / NULLIF(${Impressions},0)"
+				},
+				{
+					"measure": "Actual eCPM",
+					"formula": "${Payout_amount} * 1000.0 / NULLIF(${Impressions},0)"
+				},
+				{
+					"measure": "Predicted block eCPM",
+					"formula": "${Payout_estimate} * 1000.0 / NULLIF(${Slots},0)"
+				},
+				{
+					"measure": "Actual block eCPM",
+					"formula": "${Payout_amount} * 1000.0 / NULLIF(${Slots},0)"
+				},
+				{
+					"measure": "Predicted EPC",
+					"formula": "${Payout_estimate} * 100.0 / NULLIF(${Clicks},0)"
+				},
+				{
+					"measure": "Actual EPC",
+					"formula": "${Payout_amount} * 100.0 / NULLIF(${Clicks},0)"
+				},
+				{
+					"measure": "Predicted Payout per Conversion",
+					"formula": "${Payout_estimate} / NULLIF(${Conversions},0)"
+				},
+				{
+					"measure": "Actual Payout per Conversion",
+					"formula": "${Payout_amount} / NULLIF(${Conversions},0)"
+				},
+				{
+					"measure": "Predicted Revenue per Conversion",
+					"formula": "${Income_estimate} / NULLIF(${Conversions},0)"
+				},
+				{
+					"measure": "Actual Revenue per Conversion",
+					"formula": "${Income_amount} / NULLIF(${Conversions},0)"
+				},
+				{
+					"measure": "Income Actual to Predicted",
+					"formula": "${Income_amount} * 100.0 / NULLIF(${Income_estimate},0)"
+				},
+				{
+					"measure": "Click uniqueness, %",
+					"formula": "${Clicks} * 100.0 / NULLIF(${Hits},0)"
+				},
+				{
+					"measure": "Predicted Payout per Conversion",
+					"formula": "${Payout_amount} / NULLIF(${Conversions},0)"
+				},
+				{
+					"measure": "Network profit estimate",
+					"formula": "${Income_estimate} - ${Payout_estimate}"
+				},
+				{
+					"measure": "Network profit",
+					"formula": "${Income_amount} - ${Payout_amount}"
+				},
+				{
+					"measure": "Network profit rate estimate",
+					"formula": "(${Network_profit_estimate}  * 100.0 ) / NULLIF(${Income_estimate},0)"
+				},
+				{
+					"measure": "Network rate profit",
+					"formula": "(${Network_profit} * 100.0 ) / NULLIF(${Income_amount},0)"
+				},
+				{
+					"measure": "Prediction error, %",
+					"formula": "(${Income_estimate} - ${Original_income_estimate}) * 100.0 / NULLIF(${Original_income_estimate},0)"
 				}
 			]
 		}
