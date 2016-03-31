@@ -22,6 +22,7 @@ public class ServerLevel implements Level {
 	protected ServerLevel(ServerHierarchy hierarchy, NamedElement def, int depth){
 		this.hierarchy = hierarchy;
 		this.definition = def;
+		this.depth = depth;
 	}
 	
 	
