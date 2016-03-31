@@ -57,48 +57,7 @@ public class Query {
 		SqlConnector exec = SqlConnector.getConnector(catalog);
 		
 		exec.execute(query.toString(), query);
-			
 		
-	/*	
-		// Columns
-		Measure m = cube.getMeasures().get(0);
-		
-		List<Position> measures = new ArrayList<Position>();
-		measures.add(new ServerPosition((List)Collections.singletonList(m), 0));
-		
-		List<Hierarchy> meas_h = new ArrayList<Hierarchy>();
-		meas_h.add(m.getHierarchy());
-		
-		cellSet.addAxis(0, measures, new ArrayList<Hierarchy>());
-		
-		
-		// Rows 
-		List<Position> rows = new ArrayList<Position>();
-		Dimension dim = cube.getDimensions().get(0);
-		Hierarchy h = dim.getHierarchies().get(0);
-		Level l = h.getLevels().get(0);
-		
-
-		rows.add(new ServerPosition((List)Collections.singletonList( new ServerLevelMember(l, "BLOCK1", 0)), 0));
-		rows.add(new ServerPosition((List)Collections.singletonList( new ServerLevelMember(l, "BLOCK2", 0)), 1));
-		rows.add(new ServerPosition((List)Collections.singletonList( new ServerLevelMember(l, "BLOCK3", 0)), 2));
-		
-		List<Hierarchy> dim_h = new ArrayList<Hierarchy>();
-		dim_h.add(h);
-		
-		
-		
-		cellSet.addAxis(1, rows, dim_h);
-		
-		cellSet.setFilterAxis(new ArrayList<Position>(), new ArrayList<Hierarchy>());
-		
-		
-		cellSet.addCell( new Integer[]{0,0}, 120);
-		cellSet.addCell( new Integer[]{0,1}, 121);
-		cellSet.addCell( new Integer[]{0,2}, 122);
-		
-		
-		*/
 		
 		return cellSet;
 	}
