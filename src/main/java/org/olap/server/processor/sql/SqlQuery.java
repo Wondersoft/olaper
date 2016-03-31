@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,46 +68,57 @@ public class SqlQuery implements ResultSetProcessor{
 		
 		while(result.next()){
 
-			for(MeasureMapping measure : measures){
+			if(measures.isEmpty()){
+				mapMeasure(result, null);
+			}else{
+				for(MeasureMapping measure : measures){
 				
-				Integer[] position_indexes = new Integer[resultAxes.size()];
-				boolean adding_member = true;
-				
-				for(int i=0; i<resultAxes.size(); i++ ){
-					ResultAxis axis = resultAxes.get(i);
-					
-					List<Member> members = new ArrayList<Member>();
-					
-					for( LevelMemberSet layer : axis.getLayers() ){
-						
-						if(layer.isMeasure()){
-							members.add(measure.measure);
-						}else if(layer.getLevel() instanceof ServerLevel){
-							LevelMapping lm = mapping.getMapping(layer.getLevel());
-							String dim_value_name = result.getString(lm.name_alias);
-							String dim_value_key = lm.key_alias==null ? dim_value_name : result.getString(lm.key_alias);
-							Member member = layer.findMember( dim_value_key, dim_value_name);
-							if(member!=null)
-								members.add(member);
-							else
-								adding_member = false;
-						}
-						
-						
-					}
-					
-					if(adding_member)
-						position_indexes[i] = axis.positionOrdinal(members);
-				
+					Integer[] position_indexes = mapMeasure(result, measure);
+					if(position_indexes!=null)
+						cellSet.addCell(position_indexes, (Number) result.getObject(measure.alias), measure.measure.getFormat());
 				
 				}
-			
-				if(adding_member)
-					cellSet.addCell(position_indexes, (Number) result.getObject(measure.alias), measure.measure.getFormat());
-				
 			}
 			
 		}
+		
+	}
+
+
+	private Integer[] mapMeasure(ResultSet result, MeasureMapping measure) throws SQLException {
+		Integer[] position_indexes = new Integer[resultAxes.size()];
+		boolean adding_member = true;
+		
+		for(int i=0; i<resultAxes.size(); i++ ){
+			ResultAxis axis = resultAxes.get(i);
+			
+			List<Member> members = new ArrayList<Member>();
+			
+			for( LevelMemberSet layer : axis.getLayers() ){
+				
+				if(layer.isMeasure()){
+					members.add(measure.measure);
+				}else if(layer.getLevel() instanceof ServerLevel){
+					LevelMapping lm = mapping.getMapping(layer.getLevel());
+					String dim_value_name = result.getString(lm.name_alias);
+					String dim_value_key = lm.key_alias==null ? dim_value_name : result.getString(lm.key_alias);
+					Member member = layer.findMember( dim_value_key, dim_value_name);
+					if(member!=null)
+						members.add(member);
+					else
+						adding_member = false;
+				}
+				
+				
+			}
+			
+			if(adding_member)
+				position_indexes[i] = axis.positionOrdinal(members);
+		
+		
+		}
+
+		return adding_member ? position_indexes : null;
 		
 	}
 
