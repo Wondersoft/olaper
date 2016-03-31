@@ -16,6 +16,7 @@ import com.healthmarketscience.sqlbuilder.ComboCondition;
 import com.healthmarketscience.sqlbuilder.Condition;
 import com.healthmarketscience.sqlbuilder.CustomCondition;
 import com.healthmarketscience.sqlbuilder.InCondition;
+import com.healthmarketscience.sqlbuilder.NotCondition;
 import com.healthmarketscience.sqlbuilder.SelectQuery;
 import com.healthmarketscience.sqlbuilder.Subquery;
 import com.healthmarketscience.sqlbuilder.UnaryCondition;
@@ -28,6 +29,10 @@ public class SetSubquery {
 	private Set<String> values;
 	private String from_value, to_value;
 	private String having_expression;
+	
+	
+	private SetSubquery except;
+	
 	
 	
 	public SetSubquery(TableJoin join, TableColumn column, List<String> values) {
@@ -51,7 +56,7 @@ public class SetSubquery {
 	}
 
 
-	public void or(SetSubquery q) throws OlapException {
+	public SetSubquery or(SetSubquery q) throws OlapException {
 		
 		if( q.column!=column )
 			throw new OlapException("Incompatible members in set "+q.column.column+" vs "+column.column);
@@ -64,14 +69,23 @@ public class SetSubquery {
 		
 		if(q.to_value!=null)
 			this.to_value = q.to_value;
+		
+		return this;
 	}
 
-	
+	public SetSubquery except(SetSubquery query) {
+		this.except = query;
+		return this;
+	}
 
 	public Condition condition() {
 		
-		if((values==null || values.size()==0) && from_value==null && to_value==null)
-			return null;
+		if((values==null || values.size()==0) && from_value==null && to_value==null){
+			if(except==null)
+				return null;
+			else
+				return new NotCondition(except.condition());
+		}
 			
 		DimensionTable dim_table = join.getDimensionTable();
 		
@@ -110,20 +124,44 @@ public class SetSubquery {
 			}
 		}
 		
-		return new InCondition(join.getForeign_key(), new Subquery(dim_query) );
+		Condition myCondition = new InCondition(join.getForeign_key(), new Subquery(dim_query) );
+		
+		if(except==null){
+			return myCondition;
+		}else{
+			return ComboCondition.and(myCondition, new NotCondition(except.condition()) );
+		}
+		
+		 
 		
 	}
 	
 	public Condition havingCondition(){
-		if(having_expression==null)
-			return null;
 		
-		return new CustomCondition(having_expression);
+		if(having_expression==null){
+			if(except == null || except.having_expression==null)
+				return null;
+			else
+				return new NotCondition(except.havingCondition());
+		}
+		
+		Condition myCondition = new CustomCondition(having_expression);
+		
+		if(except==null || except.having_expression==null){
+			return myCondition;
+		}else{
+			return ComboCondition.and(myCondition, new NotCondition(except.havingCondition()) );
+		}
+		
+		
 	}
 
 	public void setHaving_expression(String having_expression) {
 		this.having_expression = having_expression;
 	}
+
+
+
 
 
 }
