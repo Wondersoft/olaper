@@ -31,7 +31,7 @@ public class SetSubquery {
 	private String having_expression;
 	
 	
-	private SetSubquery except;
+	private SetSubquery except, exists;
 	
 	
 	
@@ -77,6 +77,12 @@ public class SetSubquery {
 		this.except = query;
 		return this;
 	}
+	
+	public SetSubquery exists(SetSubquery query) {
+		this.exists = query;
+		return this;
+	}
+
 
 	public Condition condition() {
 		
@@ -126,12 +132,13 @@ public class SetSubquery {
 		
 		Condition myCondition = new InCondition(join.getForeign_key(), new Subquery(dim_query) );
 		
-		if(except==null){
-			return myCondition;
-		}else{
-			return ComboCondition.and(myCondition, new NotCondition(except.condition()) );
-		}
+		if(except!=null)
+			myCondition = ComboCondition.and(myCondition, new NotCondition(except.condition()) );
+
+		if(exists!=null)
+			myCondition = ComboCondition.and(myCondition, exists.condition());
 		
+		return myCondition;
 		 
 		
 	}
@@ -147,11 +154,14 @@ public class SetSubquery {
 		
 		Condition myCondition = new CustomCondition(having_expression);
 		
-		if(except==null || except.having_expression==null){
-			return myCondition;
-		}else{
-			return ComboCondition.and(myCondition, new NotCondition(except.havingCondition()) );
-		}
+		if(except!=null && except.having_expression!=null)
+			myCondition = ComboCondition.and(myCondition, new NotCondition(except.havingCondition()) );
+		
+		if(exists!=null && exists.having_expression!=null)
+			myCondition = ComboCondition.and(myCondition, exists.havingCondition() );
+		
+		
+		return myCondition;
 		
 		
 	}
@@ -159,6 +169,12 @@ public class SetSubquery {
 	public void setHaving_expression(String having_expression) {
 		this.having_expression = having_expression;
 	}
+
+
+	public boolean combined_with(SetSubquery query) {
+		return column.equals(query.column);
+	}
+
 
 
 

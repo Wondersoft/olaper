@@ -73,7 +73,7 @@ public class CurlyBrackets extends AbstractArgFunction {
 		
 		for(OlapOp arg: arguments ) {
 			SetSubquery q = arg.query(mapping, layer);
-			if(q!=null)
+			if(q!=null && q.combined_with(query))
 				query.or(q);
 				
 		}

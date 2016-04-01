@@ -41,7 +41,10 @@ public class ParseUtils {
 		acopy.getWithList().clear();
 		String resolvedMdx = ParseUtils.toString(acopy);
 		
-		for(ParseTreeNode wnode: selectNode.getWithList()){
+		List<ParseTreeNode> withList = selectNode.getWithList();
+		
+		for(int i=withList.size()-1; i>=0; i--){
+			ParseTreeNode wnode = withList.get(i);
 			if(wnode instanceof WithSetNode){
 				WithSetNode wsn = (WithSetNode) wnode;
 				String exprMdx = ParseUtils.toString(wsn.getExpression());
@@ -51,10 +54,10 @@ public class ParseUtils {
 				WithMemberNode wsn = (WithMemberNode) wnode;
 				String exprMdx = ParseUtils.toString(wsn.getExpression());
 				String nameMdx = wsn.getIdentifier().toString();
-				resolvedMdx = resolvedMdx.replace(nameMdx, exprMdx);								
-				
+				resolvedMdx = resolvedMdx.replace(nameMdx, exprMdx);												
 			}
 		}
+		
 		
 		
 		
