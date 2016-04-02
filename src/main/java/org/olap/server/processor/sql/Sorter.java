@@ -55,4 +55,7 @@ public class Sorter {
 		return expression;
 	}
 	
+	public void setDirectionString(String str){
+		this.direction = parseDir(str);
+	}
 }
