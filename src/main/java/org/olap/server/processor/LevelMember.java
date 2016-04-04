@@ -22,7 +22,7 @@ public class LevelMember implements Member {
 	private int ordinal;
 	
 	public LevelMember(Level level, String name, int ordinal){
-		String[] comps = name.split("/",2);
+		String[] comps = name.split("///",2);
 		this.level = level;
 		this.name = clearControls( (comps.length>1 && !comps[0].isEmpty()) ? comps[1] : comps[0]);
 		this.key = clearControls(comps[0]);
@@ -43,7 +43,7 @@ public class LevelMember implements Member {
 	@Override
 	public String getName() {
 		if(name!=null && !name.equals(key)){
-			return key + "/" + name;
+			return key + "///" + name;
 		}else if(key==null){
 			return NULL_MEMBER;
 		}else
