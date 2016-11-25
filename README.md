@@ -55,7 +55,10 @@ connect to server using XMLA URL, like http://localhost:8180/olaper/xmla.
 ## Demo configuration ("foodmart")
 
 To test and try olaper, you can use the demo configuration with the pre-configured database.
-Follow the following steps to configure it:
+
+Demo is available as Docker image: https://github.com/ivansabik/docker-olaper
+
+Otherwise, to configure the demo configuration manually, use following steps:
 
 * To setup the database you will need MySQL server installation. Log into MySQL console and create a database:
 
@@ -228,7 +231,7 @@ All measures are considered numeric - Double or Integer.
 
 ## Contributing
 
-1. Fork it ( https://github.com/Wondersoft/olap-xmla/fork )
+1. Fork it ( https://github.com/Wondersoft/olaper/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
