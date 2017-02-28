@@ -47,7 +47,7 @@ public class ServerCellSet implements CellSet {
 	private ArrayList<CellSetAxis> axes = new ArrayList<CellSetAxis>();
 	private CellSetAxis filterAxis;
 	private Cube cube;
-	private Map< List<Integer>, Cell  > cells = new HashMap< List<Integer>, Cell>();
+	private Map< String, Cell  > cells = new HashMap< String, Cell>();
 	
 	public ServerCellSet(OlapStatement olapStatement, Cube cube) {
 		this.olapStatement = olapStatement;
@@ -1015,12 +1015,22 @@ public class ServerCellSet implements CellSet {
 
 	@Override
 	public Cell getCell(List<Integer> coordinates) {
-		Cell cell = cells.get(coordinates);
+		String skey = getKeyFromInts(coordinates);
+		Cell cell = cells.get(skey);
 		if(cell==null){
-			cell = new ServerCell(this, coordinates, null, null);			
-			cells.put(coordinates, cell);
+			cell = new ServerCell(this, coordinates, null, null);	
+			cells.put(skey, cell);
 		}
 		return cell;
+	}
+	
+	
+	private String getKeyFromInts(List<Integer> coordinates){
+		StringBuffer sb = new StringBuffer();
+		for(Integer c : coordinates){
+			sb.append(c).append('.');
+		}
+		return sb.toString();
 	}
 
 	@Override
@@ -1090,7 +1100,8 @@ public class ServerCellSet implements CellSet {
 	public Cell addCell(Integer[] integers, Number value, DecimalFormat format) {		
 		List<Integer> positions = Arrays.asList(integers);
 		ServerCell cell = new ServerCell(this, positions, value, format);
-		cells.put(positions, cell);
+		String skey = getKeyFromInts(positions);
+		cells.put(skey, cell);
 		return cell;
 		
 	}
